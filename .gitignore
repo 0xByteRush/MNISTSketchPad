@@ -1,0 +1,11 @@
+node_modules/
+dist/
+training/data/
+training/.venv/
+.venv/
+venv/
+__pycache__/
+.kiosk-profile/
+test-results/
+playwright-report/
+*.log

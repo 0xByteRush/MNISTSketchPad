@@ -1,0 +1,457 @@
+/* All sizes are design pixels on the 1920x1080 board (#app), which main.ts scales to the window.
+   No web fonts: system font stack only, so nothing is fetched at runtime. */
+
+:root {
+  --pos: #3da5ff;
+  --neg: #ff8a3d;
+  --accent: #ffd84a;
+  --bg: #070a12;
+  --panel: #0d1320;
+  --outline: #2a3550;
+  --text: #e8eef8;
+  --dim: #7f8ca6;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  /* Booth-proofing: no scroll, zoom, selection, long-press menus, pull-to-refresh or swipe-back. */
+  overscroll-behavior: none;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  position: fixed;
+  inset: 0;
+}
+
+#app {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  overflow: hidden;
+}
+
+#stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+}
+
+#title {
+  position: absolute;
+  inset-inline-start: 48px;
+  top: 24px;
+  margin: 0;
+  font-size: 46px;
+  line-height: 60px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+#btn-fullscreen {
+  position: absolute;
+  inset-inline-end: 44px;
+  top: 20px;
+  width: 68px;
+  height: 68px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--outline);
+  border-radius: 16px;
+  background: var(--panel);
+  color: var(--dim);
+}
+
+/* ---- drawing pad (position mirrors PAD in viz/layout.ts) ---- */
+
+#pad-wrap {
+  position: absolute;
+  left: 48px;
+  top: 120px;
+  width: 620px;
+  height: 620px;
+  border-radius: 18px;
+  background: #000;
+  box-shadow:
+    0 0 0 3px var(--pos),
+    0 0 44px rgba(61, 165, 255, 0.55);
+  animation: pad-glow 2.6s ease-in-out infinite;
+}
+
+#pad-wrap.off {
+  pointer-events: none;
+  animation: none;
+}
+
+@keyframes pad-glow {
+  50% {
+    box-shadow:
+      0 0 0 3px var(--pos),
+      0 0 70px rgba(61, 165, 255, 0.85);
+  }
+}
+
+#pad {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  touch-action: none;
+  cursor: crosshair;
+  /* One glow for the whole drawing (a per-segment canvas shadow would look beaded). */
+  filter: drop-shadow(0 0 9px rgba(61, 165, 255, 0.85));
+}
+
+#pad-wrap .guide {
+  position: absolute;
+  inset: 13%;
+  border: 3px dashed rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+#pad-hint {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 44px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.22);
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+#pad-wrap.inked #pad-hint {
+  opacity: 0;
+}
+
+/* ---- buttons ---- */
+
+#buttons {
+  position: absolute;
+  left: 48px;
+  top: 762px;
+  width: 620px;
+  display: flex;
+  gap: 20px;
+}
+
+button.big {
+  height: 96px; /* 64 px even on a 1280x720 screen */
+  border-radius: 18px;
+  border: 0;
+  font-size: 34px;
+  font-weight: 700;
+  transition:
+    transform 0.08s,
+    opacity 0.2s;
+}
+
+button.big:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+button.secondary {
+  flex: 0 0 200px;
+  background: #1a2336;
+  box-shadow: inset 0 0 0 2px var(--outline);
+}
+
+button.primary {
+  flex: 1;
+  background: var(--pos);
+  color: #04101f;
+  box-shadow: 0 0 30px rgba(61, 165, 255, 0.45);
+}
+
+button.big:disabled {
+  opacity: 0.32;
+  box-shadow: none;
+  cursor: default;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ---- attract mode call to action ---- */
+
+#cta {
+  position: absolute;
+  left: 48px;
+  top: 752px;
+  width: 620px;
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  animation: cta-pulse 1.6s ease-in-out infinite;
+}
+
+#cta .cta-main {
+  font-size: 84px;
+  line-height: 1.05;
+  font-weight: 800;
+  color: var(--accent);
+  text-shadow: 0 0 40px rgba(255, 216, 74, 0.5);
+}
+
+#cta .cta-sub {
+  margin-top: 8px;
+  font-size: 30px;
+  color: var(--text);
+}
+
+@keyframes cta-pulse {
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* ---- answer card ---- */
+
+#card {
+  position: absolute;
+  left: 1640px;
+  top: 285px;
+  width: 250px;
+  min-height: 400px;
+  box-sizing: border-box;
+  padding: 26px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 24px;
+  background: var(--panel);
+  box-shadow:
+    0 0 0 3px var(--accent),
+    0 0 60px rgba(255, 216, 74, 0.4);
+  opacity: 0;
+  transform: scale(0.8);
+  transition:
+    opacity 0.3s,
+    transform 0.3s cubic-bezier(0.2, 1.4, 0.4, 1);
+  pointer-events: none;
+}
+
+#card.show {
+  opacity: 1;
+  transform: none;
+}
+
+#card .card-label {
+  font-size: 34px;
+  font-weight: 600;
+}
+
+#card .card-digit {
+  font-size: 210px;
+  line-height: 1.05;
+  font-weight: 800;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+#card .card-chance {
+  font-size: 34px;
+  font-weight: 700;
+}
+
+#card.unsure .card-label {
+  font-size: 25px;
+  line-height: 1.3;
+  font-weight: 500;
+}
+
+#card.unsure .card-digit {
+  font-size: 180px;
+}
+
+/* ---- caption bar and legend ---- */
+
+#caption-bar {
+  position: absolute;
+  left: 48px;
+  right: 48px;
+  top: 966px;
+  height: 104px;
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+
+#caption {
+  flex: 1;
+  margin: 0;
+  font-size: 33px;
+  line-height: 1.28;
+  font-weight: 500;
+  text-wrap: balance;
+}
+
+#legend {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px 18px;
+  border-radius: 14px;
+  background: var(--panel);
+  box-shadow: inset 0 0 0 2px var(--outline);
+  font-size: 21px;
+  line-height: 24px;
+}
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.legend-row .sign {
+  width: 16px;
+  text-align: center;
+  font-weight: 800;
+  font-size: 24px;
+}
+
+.swatch {
+  display: inline-block;
+  width: 44px;
+  height: 6px;
+  border-radius: 3px;
+}
+
+.swatch.pos {
+  background: var(--pos);
+}
+
+.swatch.neg {
+  background: var(--neg);
+}
+
+.swatch.thin {
+  width: 22px;
+  height: 2px;
+  background: var(--dim);
+}
+
+.swatch.thick {
+  width: 22px;
+  height: 8px;
+  margin-inline-end: 14px;
+  background: var(--text);
+}
+
+/* ---- staff: badge, toast, debug overlay ---- */
+
+#badge,
+#toast {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 22px;
+  border-radius: 999px;
+  background: rgba(13, 19, 32, 0.92);
+  box-shadow: inset 0 0 0 2px var(--outline);
+  font-size: 24px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+#badge {
+  top: 26px;
+  color: var(--accent);
+}
+
+#toast {
+  top: 84px;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+#toast.show {
+  opacity: 1;
+}
+
+#debug {
+  position: absolute;
+  right: 130px;
+  top: 14px;
+  width: 470px;
+  box-sizing: border-box;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(4, 8, 16, 0.94);
+  box-shadow: inset 0 0 0 1px var(--outline);
+  font:
+    16px/1.35 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
+  pointer-events: none;
+  z-index: 5;
+}
+
+#debug .row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: 8px;
+}
+
+#debug canvas {
+  width: 84px;
+  height: 84px;
+  image-rendering: pixelated;
+  background: #000;
+  outline: 1px solid var(--outline);
+}
+
+#debug canvas.input {
+  width: 140px;
+  height: 140px;
+  outline-color: var(--pos);
+}
+
+#debug .probs {
+  white-space: pre;
+  font-size: 14px;
+  line-height: 1.15;
+}
+
+#debug .note {
+  color: var(--dim);
+  margin-top: 6px;
+}

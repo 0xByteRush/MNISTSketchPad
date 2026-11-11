@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#070A12" />
+    <meta name="referrer" content="no-referrer" />
+    <title>How does an AI read your handwriting?</title>
+    <link rel="icon" href="data:," />
+  </head>
+  <body>
+    <!-- A fixed 1920x1080 board, scaled to fit the window by main.ts. -->
+    <div id="app">
+      <canvas id="stage"></canvas>
+      <h1 id="title"></h1>
+      <button id="btn-fullscreen" type="button">
+        <svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">
+          <path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+
+      <div id="pad-wrap">
+        <div class="guide"></div>
+        <div id="pad-hint"></div>
+        <canvas id="pad"></canvas>
+      </div>
+
+      <div id="buttons">
+        <button id="btn-clear" class="big secondary" type="button"></button>
+        <button id="btn-read" class="big primary" type="button" disabled></button>
+        <button id="btn-replay" class="big primary" type="button" hidden></button>
+      </div>
+
+      <div id="cta" hidden>
+        <div class="cta-main"></div>
+        <div class="cta-sub"></div>
+      </div>
+
+      <div id="card" aria-live="polite">
+        <div class="card-label"></div>
+        <div class="card-digit"></div>
+        <div class="card-chance"></div>
+      </div>
+
+      <div id="caption-bar">
+        <p id="caption" aria-live="polite"></p>
+        <div id="legend">
+          <div class="legend-row"><span class="swatch pos"></span><span class="sign">+</span><span class="legend-pos"></span></div>
+          <div class="legend-row"><span class="swatch neg"></span><span class="sign">−</span><span class="legend-neg"></span></div>
+          <div class="legend-row"><span class="swatch thin"></span><span class="swatch thick"></span><span class="legend-strength"></span></div>
+        </div>
+      </div>
+
+      <div id="badge" hidden></div>
+      <div id="toast"></div>
+      <div id="debug" hidden></div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

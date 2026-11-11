@@ -1,0 +1,27 @@
+{
+  "name": "mnist-booth",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Exhibition booth demo: draw a digit and watch a tiny neural network read it.",
+  "type": "module",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "start": "node scripts/start.mjs",
+    "kiosk": "node scripts/start.mjs --kiosk",
+    "dev": "vite",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --noEmit && vite build",
+    "release": "node scripts/release.mjs",
+    "smoke": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vite-plugin-singlefile": "^2.3.4",
+    "vitest": "^5.1.0"
+  }
+}
