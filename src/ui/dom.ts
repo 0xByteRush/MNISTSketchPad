@@ -39,7 +39,23 @@ export class Ui {
     document.documentElement.lang = document.documentElement.lang || 'en';
     this.app.dir = s.dir;
     document.title = s.title;
-    el('#title').textContent = s.title;
+    const title = el('#title');
+    const accent = s.titleAccent && s.title.endsWith(s.titleAccent) ? s.titleAccent : '';
+    title.textContent = s.title.slice(0, s.title.length - accent.length);
+    if (accent) {
+      const span = document.createElement('span');
+      span.className = 'accent';
+      span.textContent = accent;
+      title.append(span);
+    }
+    el('#kicker').textContent = s.kicker;
+    el('#club-handle').replaceChildren(
+      ...s.handle.map((line) => {
+        const div = document.createElement('div');
+        div.textContent = line;
+        return div;
+      }),
+    );
     el('#pad-hint').textContent = s.padHint;
     this.btnClear.textContent = s.clear;
     this.btnRead.textContent = s.read;

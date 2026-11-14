@@ -1,7 +1,8 @@
 // Bootstrap and the app state machine: draw -> story (scenes 2-9) -> draw, plus attract mode.
 
+import './fonts.css';
 import './style.css';
-import { BOOTH, loadConfig, type SceneId } from './config';
+import { BOOTH, FONTS, loadConfig, type SceneId } from './config';
 import { MLP, createForward, type ModelFile } from './model/mlp';
 import modelJson from './model/mnist-mlp.json';
 import { SAMPLES } from './model/samples';
@@ -303,3 +304,10 @@ ui.setControls('draw');
 ui.setInked(false);
 fit();
 startLoop();
+
+// The static canvas layer bakes in text, so redraw it once the bundled brand fonts are ready
+// (they are inlined, so this takes a moment, not a network trip).
+const canvasFaces = [`400 22px ${FONTS.mono}`, `600 26px ${FONTS.head}`, `700 30px ${FONTS.head}`, `500 21px ${FONTS.body}`, `600 22px ${FONTS.body}`];
+void Promise.all(canvasFaces.map((face) => document.fonts.load(face)))
+  .then(fit)
+  .catch(() => {});

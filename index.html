@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="theme-color" content="#070A12" />
+    <meta name="theme-color" content="#0A0B0D" />
     <meta name="referrer" content="no-referrer" />
     <title>How does an AI read your handwriting?</title>
     <link rel="icon" href="data:," />
@@ -14,7 +14,11 @@
     <!-- A fixed 1920x1080 board, scaled to fit the window by main.ts. -->
     <div id="app">
       <canvas id="stage"></canvas>
+      <div id="edge-bar"></div>
+      <div id="kicker"></div>
       <h1 id="title"></h1>
+      <img id="club-logo" src="/src/assets/cc-logo-white.png" alt="Computer Club KFUPM" draggable="false" />
+      <div id="club-handle"></div>
       <button id="btn-fullscreen" type="button">
         <svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">
           <path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />

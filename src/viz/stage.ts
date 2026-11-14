@@ -6,23 +6,22 @@
 //    into color x opacity buckets (one stroke() per bucket), then blitted every frame;
 //  - the frame loop only blits layers and draws moving parts, and allocates nothing.
 
-import { BUDGET, COLORS, NEG_RGB, POS_RGB } from '../config';
+import { BUDGET, COLORS, FONTS, NEG_RGB, POS_RGB } from '../config';
 import type { Strings } from '../strings';
 import type { EdgeSet } from './edges';
 import { BAND, BARS, DESIGN_H, DESIGN_W, H1, H2, LABEL_Y, OUT, PAD, RESULT_X, STRIP, h1x, h1y, h2y, outy, stripCellY } from './layout';
 import type { RunData } from './run';
 import type { Timeline } from './timeline';
 
-const FONT = 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
-const F_LABEL = `600 24px ${FONT}`;
-const F_SMALL = `500 21px ${FONT}`;
-const F_OUT = `700 26px ${FONT}`;
-const F_SCORE = `600 22px ${FONT}`;
-const F_SPOT_TITLE = `700 30px ${FONT}`;
-const F_SPOT_ROW = `500 25px ${FONT}`;
-const F_SPOT_NUM = `700 44px ${FONT}`;
-const F_SPOT_OUT = `800 58px ${FONT}`;
-const F_OP = `700 40px ${FONT}`;
+const F_LABEL = `400 22px ${FONTS.mono}`;
+const F_SMALL = `500 21px ${FONTS.body}`;
+const F_OUT = `600 26px ${FONTS.head}`;
+const F_SCORE = `600 22px ${FONTS.body}`;
+const F_SPOT_TITLE = `700 30px ${FONTS.head}`;
+const F_SPOT_ROW = `500 25px ${FONTS.body}`;
+const F_SPOT_NUM = `700 44px ${FONTS.head}`;
+const F_SPOT_OUT = `700 58px ${FONTS.head}`;
+const F_OP = `600 40px ${FONTS.head}`;
 
 const BUCKETS = 8;
 const enum Group {
@@ -62,7 +61,7 @@ const ACT: string[] = []; // neuron fill by activation: dark -> white
 const GRAY: string[] = []; // input pixel brightness
 for (let i = 0; i < 256; i++) {
   const t = i / 255;
-  ACT.push(`rgb(${Math.round(lerp(11, 255, t))},${Math.round(lerp(17, 255, t))},${Math.round(lerp(32, 255, t))})`);
+  ACT.push(`rgb(${Math.round(lerp(20, 255, t))},${Math.round(lerp(23, 255, t))},${Math.round(lerp(29, 255, t))})`);
   GRAY.push(`rgb(${i},${i},${i})`);
 }
 const COUNT: string[] = [];
@@ -173,7 +172,7 @@ export class Stage {
   private readonly spritePos = glowSprite(POS_RGB[0], POS_RGB[1], POS_RGB[2]);
   private readonly spriteNeg = glowSprite(NEG_RGB[0], NEG_RGB[1], NEG_RGB[2]);
   private readonly spriteWhite = glowSprite(255, 255, 255);
-  private readonly spriteAccent = glowSprite(255, 216, 74);
+  private readonly spriteAccent = glowSprite(51, 125, 254);
 
   private readonly digitImg = new PixelImage(28, 28);
   private readonly weightImg = new PixelImage(28, 28);
@@ -321,7 +320,7 @@ export class Stage {
     // Faint "everything connects" backdrop.
     const rnd = mulberry32(42);
     c.lineWidth = 1;
-    c.strokeStyle = 'rgba(130,150,200,0.045)';
+    c.strokeStyle = 'rgba(174,182,196,0.045)';
     c.beginPath();
     for (let n = 0; n < BUDGET.backdropEdges; n++) {
       this.endpoints(Group.In, Math.floor(rnd() * 784), Math.floor(rnd() * 64));
@@ -329,7 +328,7 @@ export class Stage {
       c.lineTo(this.bx, this.by);
     }
     c.stroke();
-    c.strokeStyle = 'rgba(130,150,200,0.04)';
+    c.strokeStyle = 'rgba(174,182,196,0.04)';
     c.beginPath();
     for (let i = 0; i < 64; i++) {
       for (let j = 0; j < 32; j++) {
@@ -339,7 +338,7 @@ export class Stage {
       }
     }
     c.stroke();
-    c.strokeStyle = 'rgba(130,150,200,0.07)';
+    c.strokeStyle = 'rgba(174,182,196,0.07)';
     c.beginPath();
     for (let i = 0; i < 32; i++) {
       for (let j = 0; j < 10; j++) {
@@ -351,7 +350,7 @@ export class Stage {
     c.stroke();
 
     // Input strip.
-    c.fillStyle = 'rgb(17,23,36)';
+    c.fillStyle = COLORS.panel;
     c.fillRect(STRIP.x, STRIP.y, STRIP.w, STRIP.h);
     c.strokeStyle = COLORS.outline;
     c.lineWidth = 1.5;
@@ -359,7 +358,7 @@ export class Stage {
 
     // Neuron outlines.
     c.fillStyle = ACT[0];
-    c.strokeStyle = '#3A4A70';
+    c.strokeStyle = COLORS.neuron;
     c.lineWidth = 1.2;
     for (let j = 0; j < H1.n; j++) circle(c, h1x[j], h1y[j], H1.r);
     for (let j = 0; j < H2.n; j++) circle(c, H2.x, h2y[j], H2.r);
@@ -518,7 +517,7 @@ export class Stage {
         c.drawImage(this.digitImg.canvas, PAD.x, PAD.y, PAD.size, PAD.size);
         // Cell borders, flashing briefly as the drawing snaps to the grid.
         c.globalAlpha = Math.min(1, base * (0.1 + 0.3 * Math.sin(Math.PI * pPix)));
-        c.strokeStyle = '#9FB4D8';
+        c.strokeStyle = COLORS.dim;
         c.lineWidth = 1;
         c.beginPath();
         for (let i = 1; i < 28; i++) {
@@ -557,7 +556,7 @@ export class Stage {
         const rowW = lerp(PAD.size, STRIP.w, e);
         const rowH = lerp(cs, 28, e);
         c.globalAlpha = 0.5;
-        c.fillStyle = '#1B2740';
+        c.fillStyle = COLORS.outline;
         c.fillRect(rowX, rowY, rowW, rowH);
         c.globalAlpha = 1;
         for (let col = 0; col < 28; col++) {
@@ -784,17 +783,17 @@ export class Stage {
       c.beginPath();
       c.arc(OUT.x, y, OUT.r, 0, Math.PI * 2);
       c.fill();
-      c.strokeStyle = isWinner ? COLORS.accent : '#3A4A70';
+      c.strokeStyle = isWinner ? COLORS.accent : COLORS.neuron;
       c.lineWidth = isWinner ? 2 + 3 * win : 2;
       c.stroke();
       c.font = F_OUT;
       c.textAlign = 'center';
-      c.fillStyle = level > 0.55 ? '#0B1120' : COLORS.text;
+      c.fillStyle = level > 0.55 ? COLORS.bg : COLORS.text;
       c.fillText(DIGITS[j], OUT.x, y + 1);
 
       // Bar: score length (relative to this run's lowest and highest score) -> probability.
       const len = lerp(run.logitLevel[j], f.probs[j], morph) * BARS.maxLen * rv;
-      c.fillStyle = isWinner ? COLORS.accent : '#8FA3C0';
+      c.fillStyle = isWinner ? COLORS.accent : COLORS.neuron;
       c.fillRect(BARS.x, y - BARS.h / 2, Math.max(1.5, len), BARS.h);
       c.font = F_SCORE;
       c.textAlign = 'left';

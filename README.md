@@ -1,5 +1,8 @@
 # MNIST Booth Demo
 
+> **Computer Club KFUPM edition.** Start with [BOOTH_GUIDE.md](BOOTH_GUIDE.md): setup, booth
+> operation, the Wacom tablet and the club look, all in one place.
+
 **How does an AI read your handwriting?** A visitor draws a digit, presses **Read it!**, and an
 8-second animation shows a small neural network turning the drawing into an answer:
 

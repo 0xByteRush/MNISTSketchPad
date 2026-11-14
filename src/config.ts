@@ -1,19 +1,29 @@
 // Defaults for timings, colors and budgets. Booth-tunable values can be overridden by URL
 // parameters, e.g. ?speed=1.5&spotlight=0&step=1&autorun=1&idle=60&debug=1&lang=en
 
+// Computer Club KFUPM brand palette (Brand Kit v1.0). Orange is kept as the one data color for
+// negative weights: the captions and legend teach "blue pushes up, orange pushes down".
 export const COLORS = {
-  pos: '#3DA5FF', // positive weight
-  neg: '#FF8A3D', // negative weight
-  accent: '#FFD84A', // winner
-  bg: '#070A12',
-  panel: '#0D1320',
-  outline: '#2A3550',
-  text: '#E8EEF8',
-  dim: '#7F8CA6',
+  pos: '#337DFE', // positive weight: Club Blue
+  neg: '#FF8A3D', // negative weight (data color, not a brand color)
+  accent: '#337DFE', // winner: Club Blue
+  bg: '#0A0B0D', // Club Black
+  panel: '#14171D', // Surface Dark
+  outline: '#272C36', // Line Dark
+  text: '#FFFFFF',
+  dim: '#AEB6C4', // Mist
+  neuron: '#475063', // Slate: idle neuron rims, losing score bars
 } as const;
 
-export const POS_RGB = [61, 165, 255] as const;
+export const POS_RGB = [51, 125, 254] as const;
 export const NEG_RGB = [255, 138, 61] as const;
+
+/** Canvas fonts. main.ts waits for these to load before the first draw. */
+export const FONTS = {
+  head: '"Poppins", system-ui, "Segoe UI", Arial, sans-serif',
+  body: '"Inter", system-ui, "Segoe UI", Arial, sans-serif',
+  mono: '"JetBrains Mono", ui-monospace, Consolas, monospace',
+} as const;
 
 export type SceneId = 'pixelate' | 'flatten' | 'spotlight' | 'hidden1' | 'hidden2' | 'output' | 'softmax' | 'hold';
 

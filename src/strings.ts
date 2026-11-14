@@ -5,6 +5,12 @@
 export interface Strings {
   dir: 'ltr' | 'rtl';
   title: string;
+  /** The end of `title` shown in Club Blue (the brand's "payoff words"). Empty for none. */
+  titleAccent: string;
+  /** Small label above the title. */
+  kicker: string;
+  /** Club handle and hashtag under the logo, one entry per line. */
+  handle: string[];
   clear: string;
   read: string;
   replay: string;
@@ -41,6 +47,9 @@ export interface Strings {
 const en: Strings = {
   dir: 'ltr',
   title: 'How does an AI read your handwriting?',
+  titleAccent: 'your handwriting?',
+  kicker: 'Computer Club KFUPM · Live AI demo',
+  handle: ['@kfupm_cc', '#MaxThroughput'],
   clear: 'Clear',
   read: 'Read it!',
   replay: 'Replay',
